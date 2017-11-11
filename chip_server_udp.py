@@ -116,6 +116,9 @@ if __name__ == '__main__':
     receive_time = time.time()
     UT.unexport_all()
     while 1:
+        if receive_time > time.time() + 1.0 and chip_dio_inited:
+            stop_motor()                                           
+
         q = get_ch()
         if q:
             print(ord(q))
@@ -144,5 +147,3 @@ if __name__ == '__main__':
                 thread.exit()
                 sock.close()
                 sys.exit(1)
-            if receive_time > time.time() + 1.0 and chip_dio_inited:
-                stop_motor()                                           
