@@ -93,6 +93,7 @@ def UdpList(sock):
       SERVO.set_angle('CSID4',70)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
+      stop_motor()                                           
       if chip_dio_inited==1:
         chip_dio_deinit()                                           
       print('quit')
@@ -117,7 +118,8 @@ if __name__ == '__main__':
     receive_time = time.time()
     UT.unexport_all()
     while 1:
-        if (receive_time > time.time() + 1.0) and chip_dio_inited:
+        if (receive_time + 1.0 < time.time()) and chip_dio_inited:
+            receive_time = time.time()
             stop_motor()                                           
 
         q = get_ch()
