@@ -39,7 +39,6 @@ def stop_motor():
 
 def chip_dio_deinit():
     chip_dio_inited = 0
-    GPIO.output("LCD-CLK",GPIO.LOW)
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
