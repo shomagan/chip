@@ -27,6 +27,8 @@ def chip_dio_init():
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
+        SERVO.stop("CSID4")
+        SERVO.stop("CSID5")
 
 
 def chip_dio_deinit():
@@ -34,8 +36,8 @@ def chip_dio_deinit():
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
-    SERVO.cleanup("CSID4")
-    SERVO.cleanup("CSID5")
+    SERVO.cleanup()
+
 
 def print_debug(content):
     print(content)
