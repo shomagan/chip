@@ -89,6 +89,7 @@ if __name__ == '__main__':
    
     sock = socket.socket(socket.AF_INET, # Internet
                          socket.SOCK_DGRAM) # UDP
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("", UDP_PORT_SERVER))
 
     thread.start_new_thread(UdpList, (sock,))
