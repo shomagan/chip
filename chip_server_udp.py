@@ -99,7 +99,7 @@ def UdpList(sock):
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.set_angle("CSID5",25)
-      SERVO.set_angle('CSID4',80)
+      SERVO.set_angle('CSID4',-10)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       stop_motor()                                           
