@@ -32,7 +32,7 @@ def get_ch():
         ch = msvcrt.getch()
         return ch
     elif PLATFORM == "unix":
-        fd = sys.stdin.fileno()
+        '''        fd = sys.stdin.fileno()
         old_setting = termios.tcgetattr(fd)
         try:
             tty.setraw(sys.stdin.fileno())
@@ -44,7 +44,7 @@ def get_ch():
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_setting)
         return ch
-    else:
+    else:'''
         return ""
 
 def UdpList(sock):
