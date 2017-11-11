@@ -13,6 +13,9 @@ except ImportError:
 import socket,_thread as thread, threading
 import time 
 chip_dio_inited = 0
+UDP_PORT_CLIENT = 8
+UDP_PORT_SERVER = 7
+
 def chip_dio_init():
     chip_dio_inited = 1
     GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
@@ -32,19 +35,6 @@ def get_ch():
         ch = msvcrt.getch()
         return ch
     elif PLATFORM == "unix":
-        '''        fd = sys.stdin.fileno()
-        old_setting = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            i, o, e = select([sys.stdin.fileno()], [], [], 5)
-            if i:
-                ch = sys.stdin.read(1)
-            else:
-                ch = ""
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_setting)
-        return ch
-    else:'''
         return ""
 
 def UdpList(sock):
@@ -85,20 +75,21 @@ def UdpList(sock):
       print_debug('receive quit')
       if chip_dio_inited==1:
         chip_dio_deinit()                                           
+    send_str = bytearray([72])
+    sock.sendto(send_str,(addr, UDP_PORT_CLIENT))
+
 
     print_debug(data_s)
 
 if __name__ == '__main__':
     UDP_IP = '127.0.0.1'
-    UDP_PORT_CLIENT = 8
-    UDP_PORT_SERVER = 7
     MESSAGE = "Hello,chip!"
     print ("UDP target port:", UDP_PORT_SERVER)
     print (MESSAGE)
    
     sock = socket.socket(socket.AF_INET, # Internet
                          socket.SOCK_DGRAM) # UDP
-    sock.bind(("", UDP_PORT_CLIENT))
+    sock.bind(("", UDP_PORT_SERVER))
 
     thread.start_new_thread(UdpList, (sock,))
     receive_time = time.time()
@@ -110,23 +101,23 @@ if __name__ == '__main__':
                 print('socket connection')
             if ord(q) == 72:   #/\
                 send_str = bytearray([72])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_SERVER))
+                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('/\\')
             if ord(q) == 80:   #\/
                 send_str = bytearray([80])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_SERVER))
+                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('\\/')
             if ord(q) == 77:   #->
                 send_str = bytearray([77])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_SERVER))
+                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('->')
             if ord(q) == 75:   #<-
                 send_str = bytearray([75])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_SERVER))
+                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('<-')
             if ord(q) == 113:   #q
                 send_str = bytearray([113])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_SERVER))
+                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('quit')
                 time.sleep(2)
                 thread.exit()
