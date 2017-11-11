@@ -14,12 +14,12 @@ except ImportError:
 
 import socket,_thread as thread, threading
 import time 
-chip_dio_inited = 0
+global chip_dio_inited = 0
 UDP_PORT_CLIENT = 8
 UDP_PORT_SERVER = 7
 
 def chip_dio_init():
-    chip_dio_inited = 1
+    global chip_dio_inited = 1
     try:
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
@@ -27,7 +27,7 @@ def chip_dio_init():
     except RuntimeError:
         UT.unexport_all()
         chip_dio_deinit()
-        chip_dio_inited = 1
+        global chip_dio_inited = 1
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
@@ -39,7 +39,7 @@ def stop_motor():
 
 
 def chip_dio_deinit():
-    chip_dio_inited = 0
+    global chip_dio_inited = 0
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
@@ -69,28 +69,28 @@ def UdpList(sock):
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.set_angle('CSID4',-10)
-      SERVO.set_angle('CSID5', 70)
+      SERVO.set_angle('CSID5', 80)
     if len(data_s)==1 and data_s[0]==80:
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.set_angle('CSID5',-10)
-      SERVO.set_angle('CSID4', 70)
+      SERVO.set_angle('CSID4', 80)
     if len(data_s)==1 and data_s[0]==77:
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.stop("CSID4")
-      SERVO.set_angle('CSID5',70)
+      SERVO.set_angle("CSID4",25)
+      SERVO.set_angle('CSID5',80)
     if len(data_s)==1 and data_s[0]==75:
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.stop("CSID5")
-      SERVO.set_angle('CSID4',70)
+      SERVO.set_angle("CSID5",25)
+      SERVO.set_angle('CSID4',80)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       stop_motor()                                           
