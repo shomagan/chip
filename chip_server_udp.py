@@ -39,6 +39,7 @@ def stop_motor():
 
 def chip_dio_deinit():
     chip_dio_inited = 0
+    GPIO.output("LCD-CLK",GPIO.LOW)
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
@@ -63,24 +64,28 @@ def UdpList(sock):
     for i in range(0,len(data)):
       data_s.append(data[i])
     if len(data_s)==1 and data_s[0]==72:
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive /\\')
       if chip_dio_inited==0:
         chip_dio_init()
       SERVO.set_angle('CSID4',-10)
       SERVO.set_angle('CSID5', 60)
     if len(data_s)==1 and data_s[0]==80:
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
       SERVO.set_angle('CSID5',-10)
       SERVO.set_angle('CSID4', 60)
     if len(data_s)==1 and data_s[0]==77:
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
       SERVO.stop("CSID4")
       SERVO.set_angle('CSID5',60)
     if len(data_s)==1 and data_s[0]==75:
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
@@ -90,7 +95,11 @@ def UdpList(sock):
       print_debug('receive quit')
       if chip_dio_inited==1:
         chip_dio_deinit()                                           
-
+      print('quit')
+      time.sleep(2)
+      thread.exit()
+      sock.close()
+      sys.exit(1)
     print_debug(data_s)
 
 if __name__ == '__main__':
