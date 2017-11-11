@@ -9,6 +9,8 @@ except ImportError:
     from select import select
     import CHIP_IO.SERVO as SERVO
     import CHIP_IO.GPIO as GPIO
+    import CHIP_IO.Utilities as UT
+
 
 import socket,_thread as thread, threading
 import time 
@@ -23,13 +25,21 @@ def chip_dio_init():
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
+        SERVO.stop("CSID4")
+        SERVO.stop("CSID5")
+
     except RuntimeError:
+        UT.unexport_all()
         chip_dio_deinit()
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
         SERVO.stop("CSID4")
         SERVO.stop("CSID5")
+def stop_motor():
+    GPIO.output("LCD-CLK",GPIO.LOW)
+    SERVO.stop("CSID4")
+    SERVO.stop("CSID5")
 
 
 def chip_dio_deinit():
@@ -104,6 +114,7 @@ if __name__ == '__main__':
 
     thread.start_new_thread(UdpList, (sock,))
     receive_time = time.time()
+    UT.unexport_all()
     while 1:
         q = get_ch()
         if q:
@@ -127,12 +138,11 @@ if __name__ == '__main__':
                 sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('<-')
             if ord(q) == 113:   #q
-                send_str = bytearray([113])
-                sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
                 print('quit')
+                chip_dio_deinit()
                 time.sleep(2)
                 thread.exit()
                 sock.close()
                 sys.exit(1)
             if receive_time > time.time() + 1.0 and chip_dio_inited:
-                chip_dio_deinit()                                           
+                stop_motor()                                           

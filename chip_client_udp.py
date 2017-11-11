@@ -9,6 +9,8 @@ except ImportError:
     from select import select
     import CHIP_IO.SERVO as SERVO
     import CHIP_IO.GPIO as GPIO
+    import CHIP_IO.Utilities as UT
+    UT.unexport_all()
 
 import socket,_thread as thread, threading
 import time 
