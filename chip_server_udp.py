@@ -20,26 +20,21 @@ UDP_PORT_SERVER = 7
 
 def chip_dio_init():
     chip_dio_inited = 1
-    SERVO.cleanup()
     try:
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
-        SERVO.stop("CSID4")
-        SERVO.stop("CSID5")
-
     except RuntimeError:
         UT.unexport_all()
         chip_dio_deinit()
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
-        SERVO.stop("CSID4")
-        SERVO.stop("CSID5")
+
 def stop_motor():
     GPIO.output("LCD-CLK",GPIO.LOW)
-    SERVO.stop("CSID4")
-    SERVO.stop("CSID5")
+    SERVO.start("CSID4",25)
+    SERVO.start("CSID5",25)
 
 
 def chip_dio_deinit():
