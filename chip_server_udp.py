@@ -1,4 +1,4 @@
-#!/c/Python33/ python
+#!/usr/bin/python3
 import sys
 try:
     import msvcrt
