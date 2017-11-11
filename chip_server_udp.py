@@ -76,7 +76,7 @@ def UdpList(sock):
       if chip_dio_inited==1:
         chip_dio_deinit()                                           
     send_str = bytearray([72])
-    sock.sendto(send_str,(addr, UDP_PORT_CLIENT))
+    sock.sendto(send_str,(str(addr), UDP_PORT_CLIENT))
 
 
     print_debug(data_s)
