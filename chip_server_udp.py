@@ -18,6 +18,7 @@ UDP_PORT_SERVER = 7
 
 def chip_dio_init():
     chip_dio_inited = 1
+    SERVO.cleanup()
     try:
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
