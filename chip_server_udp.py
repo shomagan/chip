@@ -27,6 +27,7 @@ def chip_dio_init():
     except RuntimeError:
         UT.unexport_all()
         chip_dio_deinit()
+        chip_dio_inited = 1
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
@@ -67,29 +68,29 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID4',-20)
-      SERVO.set_angle('CSID5', 60)
+      SERVO.set_angle('CSID4',-10)
+      SERVO.set_angle('CSID5', 70)
     if len(data_s)==1 and data_s[0]==80:
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID5',-20)
-      SERVO.set_angle('CSID4', 60)
+      SERVO.set_angle('CSID5',-10)
+      SERVO.set_angle('CSID4', 70)
     if len(data_s)==1 and data_s[0]==77:
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.stop("CSID4")
-      SERVO.set_angle('CSID5',60)
+      SERVO.set_angle('CSID5',70)
     if len(data_s)==1 and data_s[0]==75:
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.stop("CSID5")
-      SERVO.set_angle('CSID4',60)
+      SERVO.set_angle('CSID4',70)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       if chip_dio_inited==1:
@@ -116,7 +117,7 @@ if __name__ == '__main__':
     receive_time = time.time()
     UT.unexport_all()
     while 1:
-        if receive_time > time.time() + 1.0 and chip_dio_inited:
+        if (receive_time > time.time() + 1.0) and chip_dio_inited:
             stop_motor()                                           
 
         q = get_ch()
