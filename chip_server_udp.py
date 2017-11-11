@@ -15,7 +15,7 @@ except ImportError:
 import socket,_thread as thread, threading
 import time 
 global chip_dio_inited
-
+global receive_time
 UDP_PORT_CLIENT = 8
 UDP_PORT_SERVER = 7
 
@@ -36,8 +36,8 @@ def chip_dio_init():
 
 def stop_motor():
     GPIO.output("LCD-CLK",GPIO.LOW)
-    SERVO.start("CSID4",25)
-    SERVO.start("CSID5",25)
+    SERVO.set_angle("CSID4",25)
+    SERVO.set_angle("CSID5",25)
 
 
 def chip_dio_deinit():
@@ -60,6 +60,7 @@ def get_ch():
 
 def UdpList(sock):
   global chip_dio_inited
+  global receive_time
   while(1):
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     print (addr)
@@ -68,6 +69,7 @@ def UdpList(sock):
     for i in range(0,len(data)):
       data_s.append(data[i])
     if len(data_s)==1 and data_s[0]==72:
+      receive_time = time.time()
       print_debug('receive /\\')
       if chip_dio_inited==0:
         chip_dio_init()
@@ -75,6 +77,7 @@ def UdpList(sock):
       SERVO.set_angle('CSID4',-10)
       SERVO.set_angle('CSID5', 80)
     if len(data_s)==1 and data_s[0]==80:
+      receive_time = time.time()
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
@@ -82,6 +85,7 @@ def UdpList(sock):
       SERVO.set_angle('CSID5',-10)
       SERVO.set_angle('CSID4', 80)
     if len(data_s)==1 and data_s[0]==77:
+      receive_time = time.time()
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
@@ -89,6 +93,7 @@ def UdpList(sock):
       SERVO.set_angle("CSID4",25)
       SERVO.set_angle('CSID5',80)
     if len(data_s)==1 and data_s[0]==75:
+      receive_time = time.time()
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
@@ -109,6 +114,7 @@ def UdpList(sock):
 
 if __name__ == '__main__':
     global chip_dio_inited
+    global receive_time
     chip_dio_inited = 0
     UDP_IP = '127.0.0.1'
     MESSAGE = "Hello,chip!"
