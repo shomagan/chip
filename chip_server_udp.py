@@ -34,6 +34,8 @@ def chip_dio_deinit():
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
+    SERVO.cleanup("CSID4")
+    SERVO.cleanup("CSID5")
 
 def print_debug(content):
     print(content)
@@ -68,16 +70,14 @@ def UdpList(sock):
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
-      SERVO.set_angle('CSID4',25)
+      SERVO.stop("CSID4")
       SERVO.set_angle('CSID5',60)
-
     if len(data_s)==1 and data_s[0]==75:
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
-      SERVO.set_angle('CSID4',25)
-      SERVO.set_angle('CSID5',60)
-
+      SERVO.stop("CSID5")
+      SERVO.set_angle('CSID4',60)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       if chip_dio_inited==1:
