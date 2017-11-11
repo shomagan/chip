@@ -64,31 +64,31 @@ def UdpList(sock):
     for i in range(0,len(data)):
       data_s.append(data[i])
     if len(data_s)==1 and data_s[0]==72:
-      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive /\\')
       if chip_dio_inited==0:
         chip_dio_init()
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.set_angle('CSID4',-10)
       SERVO.set_angle('CSID5', 60)
     if len(data_s)==1 and data_s[0]==80:
-      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.set_angle('CSID5',-10)
       SERVO.set_angle('CSID4', 60)
     if len(data_s)==1 and data_s[0]==77:
-      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.stop("CSID4")
       SERVO.set_angle('CSID5',60)
     if len(data_s)==1 and data_s[0]==75:
-      GPIO.output("LCD-CLK",GPIO.HIGH)
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
+      GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.stop("CSID5")
       SERVO.set_angle('CSID4',60)
     if len(data_s)==1 and data_s[0]==113:
