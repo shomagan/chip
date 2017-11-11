@@ -14,12 +14,14 @@ except ImportError:
 
 import socket,_thread as thread, threading
 import time 
-global chip_dio_inited = 0
+global chip_dio_inited
+
 UDP_PORT_CLIENT = 8
 UDP_PORT_SERVER = 7
 
 def chip_dio_init():
-    global chip_dio_inited = 1
+    global chip_dio_inited
+    chip_dio_inited = 1
     try:
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
@@ -27,7 +29,7 @@ def chip_dio_init():
     except RuntimeError:
         UT.unexport_all()
         chip_dio_deinit()
-        global chip_dio_inited = 1
+        chip_dio_inited = 1
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
@@ -39,7 +41,8 @@ def stop_motor():
 
 
 def chip_dio_deinit():
-    global chip_dio_inited = 0
+    global chip_dio_inited
+    chip_dio_inited = 0
     GPIO.cleanup("LCD-CLK")
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
@@ -56,6 +59,7 @@ def get_ch():
         return ""
 
 def UdpList(sock):
+  global chip_dio_inited
   while(1):
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     print (addr)
@@ -104,6 +108,8 @@ def UdpList(sock):
     print_debug(data_s)
 
 if __name__ == '__main__':
+    global chip_dio_inited
+    chip_dio_inited = 0
     UDP_IP = '127.0.0.1'
     MESSAGE = "Hello,chip!"
     print ("UDP target port:", UDP_PORT_SERVER)
