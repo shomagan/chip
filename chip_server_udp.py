@@ -18,9 +18,16 @@ UDP_PORT_SERVER = 7
 
 def chip_dio_init():
     chip_dio_inited = 1
-    GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
-    SERVO.start("CSID4",25)
-    SERVO.start("CSID5",25)
+    try:
+        GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
+        SERVO.start("CSID4",25)
+        SERVO.start("CSID5",25)
+    except RuntimeError:
+        chip_dio_deinit()
+        GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
+        SERVO.start("CSID4",25)
+        SERVO.start("CSID5",25)
+
 
 def chip_dio_deinit():
     chip_dio_inited = 0
