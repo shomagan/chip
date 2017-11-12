@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 import sys
+old_stdout = sys.stdout
+log_file = open("message.log","w")
+sys.stdout = log_file
+
 try:
     import msvcrt
     PLATFORM = "win"
@@ -111,6 +115,8 @@ def UdpList(sock):
       time.sleep(2)
       thread.exit()
       sock.close()
+      sys.stdout = old_stdout
+      log_file.close()
       sys.exit(1)
     print_debug(data_s)
 
