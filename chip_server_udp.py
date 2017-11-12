@@ -50,7 +50,9 @@ def chip_dio_deinit():
 
 
 def print_debug(content):
-    print(content)
+    a = 0
+    b = a
+
 def get_ch():
     if PLATFORM == "win":
         ch = msvcrt.getch()
@@ -63,8 +65,8 @@ def UdpList(sock):
   global receive_time
   while(1):
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-    print (addr)
-    print ((data),len(data))
+    print_debug (addr)
+    print_debug ((data),len(data))
     data_s = []
     for i in range(0,len(data)):
       data_s.append(data[i])
@@ -105,7 +107,7 @@ def UdpList(sock):
       stop_motor()                                           
       if chip_dio_inited==1:
         chip_dio_deinit()                                           
-      print('quit')
+      print_debug('quit')
       time.sleep(2)
       thread.exit()
       sock.close()
@@ -118,8 +120,8 @@ if __name__ == '__main__':
     chip_dio_inited = 0
     UDP_IP = '127.0.0.1'
     MESSAGE = "Hello,chip!"
-    print ("UDP target port:", UDP_PORT_SERVER)
-    print (MESSAGE)
+    print_debug ("UDP target port:", UDP_PORT_SERVER)
+    print_debug (MESSAGE)
    
     sock = socket.socket(socket.AF_INET, # Internet
                          socket.SOCK_DGRAM) # UDP
@@ -136,27 +138,27 @@ if __name__ == '__main__':
 
         q = get_ch()
         if q:
-            print(ord(q))
+            print_debug(ord(q))
             if ord(q) == 99:   #c
-                print('socket connection')
+                print_debug('socket connection')
             if ord(q) == 72:   #/\
                 send_str = bytearray([72])
                 sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
-                print('/\\')
+                print_debug('/\\')
             if ord(q) == 80:   #\/
                 send_str = bytearray([80])
                 sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
-                print('\\/')
+                print_debug('\\/')
             if ord(q) == 77:   #->
                 send_str = bytearray([77])
                 sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
-                print('->')
+                print_debug('->')
             if ord(q) == 75:   #<-
                 send_str = bytearray([75])
                 sock.sendto(send_str,(UDP_IP, UDP_PORT_CLIENT))
-                print('<-')
+                print_debug('<-')
             if ord(q) == 113:   #q
-                print('quit')
+                print_debug('quit')
                 chip_dio_deinit()
                 time.sleep(2)
                 thread.exit()
