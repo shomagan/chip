@@ -49,7 +49,7 @@ def chip_dio_deinit():
     SERVO.cleanup()
 
 
-def print_debug(content):
+def print_debug(*args):
     a = 0
     b = a
 
