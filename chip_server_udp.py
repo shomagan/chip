@@ -80,32 +80,32 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID4',-10)
-      SERVO.set_angle('CSID5', 80)
+      SERVO.set_angle('CSID4',-90)
+      SERVO.set_angle('CSID5', 90)
     if len(data_s)==1 and data_s[0]==80:
       receive_time = time.time()
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID5',-10)
-      SERVO.set_angle('CSID4', 80)
+      SERVO.set_angle('CSID5',-90)
+      SERVO.set_angle('CSID4', 90)
     if len(data_s)==1 and data_s[0]==77:
       receive_time = time.time()
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle("CSID4",5)
-      SERVO.set_angle('CSID5',80)
+      SERVO.set_angle("CSID4",90)
+      SERVO.set_angle('CSID5',90)
     if len(data_s)==1 and data_s[0]==75:
       receive_time = time.time()
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle("CSID5",45)
-      SERVO.set_angle('CSID4',-10)
+      SERVO.set_angle("CSID5",-90)
+      SERVO.set_angle('CSID4',-90)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       stop_motor()                                           
