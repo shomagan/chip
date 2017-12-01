@@ -20,6 +20,7 @@ import socket,_thread as thread, threading
 import time 
 global chip_dio_inited
 global receive_time
+global command_last
 UDP_PORT_CLIENT = 8
 UDP_PORT_SERVER = 7
 
@@ -32,7 +33,6 @@ def chip_dio_init():
         SERVO.start("CSID5",25)
     except RuntimeError:
         UT.unexport_all()
-        chip_dio_inited = 1
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
         SERVO.start("CSID5",25)
@@ -41,6 +41,7 @@ def stop_motor():
     GPIO.output("LCD-CLK",GPIO.LOW)
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
+    command_last = 0
 
 
 def chip_dio_deinit():
@@ -69,6 +70,8 @@ def get_ch():
 def UdpList(sock):
   global chip_dio_inited
   global receive_time
+  global command_last
+  command_last = 0
   while(1):
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     print_debug (addr)
@@ -81,14 +84,23 @@ def UdpList(sock):
       print_debug('receive /\\')
       if chip_dio_inited==0:
         chip_dio_init()
+      if command_last:
+          stop_motor()
+      command_last = 72
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start("CSID4", -35)
       SERVO.start("CSID5", 60)
+      else:
+
     if len(data_s)==1 and data_s[0]==80:
       receive_time = time.time()
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
+      if command_last:
+          stop_motor()
+
+      command_last = 80
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start('CSID5',-35)
       SERVO.start('CSID4', 60)
@@ -97,6 +109,10 @@ def UdpList(sock):
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
+      if command_last:
+          stop_motor()
+
+      command_last = 77
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start("CSID4",60)
       SERVO.start('CSID5',60)
@@ -105,6 +121,10 @@ def UdpList(sock):
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
+      if command_last:
+          stop_motor()
+
+      command_last = 75
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start("CSID5",-60)
       SERVO.start('CSID4',-60)
