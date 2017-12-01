@@ -38,6 +38,7 @@ def chip_dio_init():
         SERVO.start("CSID5",25)
 
 def stop_motor():
+    global command_last
     GPIO.output("LCD-CLK",GPIO.LOW)
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
@@ -53,7 +54,6 @@ def chip_dio_deinit():
     SERVO.cleanup()
     UT.unexport_all()
 
-chip_dio_deinit()
 
 
 def print_debug(*args):
@@ -90,7 +90,7 @@ def UdpList(sock):
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start("CSID4", -35)
       SERVO.start("CSID5", 60)
-      
+
 
     if len(data_s)==1 and data_s[0]==80:
       receive_time = time.time()
