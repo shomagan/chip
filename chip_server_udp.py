@@ -32,7 +32,6 @@ def chip_dio_init():
         SERVO.start("CSID5",25)
     except RuntimeError:
         UT.unexport_all()
-        chip_dio_deinit()
         chip_dio_inited = 1
         GPIO.setup("LCD-CLK",GPIO.OUT,initial=0)
         SERVO.start("CSID4",25)
@@ -40,8 +39,8 @@ def chip_dio_init():
 
 def stop_motor():
     GPIO.output("LCD-CLK",GPIO.LOW)
-    SERVO.set_angle("CSID4",25)
-    SERVO.set_angle("CSID5",25)
+    SERVO.stop("CSID4")
+    SERVO.stop("CSID5")
 
 
 def chip_dio_deinit():
@@ -51,6 +50,9 @@ def chip_dio_deinit():
     SERVO.stop("CSID4")
     SERVO.stop("CSID5")
     SERVO.cleanup()
+    UT.unexport_all()
+
+chip_dio_deinit()
 
 
 def print_debug(*args):
@@ -80,32 +82,32 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID4',-60)
-      SERVO.set_angle('CSID5', 60)
+      SERVO.start("CSID4", -35)
+      SERVO.start("CSID5", 60)
     if len(data_s)==1 and data_s[0]==80:
       receive_time = time.time()
       print_debug('receive \\/')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle('CSID5',-60)
-      SERVO.set_angle('CSID4', 60)
+      SERVO.start('CSID5',-35)
+      SERVO.start('CSID4', 60)
     if len(data_s)==1 and data_s[0]==77:
       receive_time = time.time()
       print_debug('receive ->')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle("CSID4",60)
-      SERVO.set_angle('CSID5',60)
+      SERVO.start("CSID4",60)
+      SERVO.start('CSID5',60)
     if len(data_s)==1 and data_s[0]==75:
       receive_time = time.time()
       print_debug('receive <-')
       if chip_dio_inited==0:
         chip_dio_init()
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.set_angle("CSID5",-60)
-      SERVO.set_angle('CSID4',-60)
+      SERVO.start("CSID5",-60)
+      SERVO.start('CSID4',-60)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       stop_motor()                                           
@@ -138,9 +140,9 @@ if __name__ == '__main__':
     receive_time = time.time()
     UT.unexport_all()
     while 1:
-        if (receive_time + 1.0 < time.time()) and chip_dio_inited:
+        if (receive_time + 0.8 < time.time()) and chip_dio_inited:
             receive_time = time.time()
-            stop_motor()                                           
+            stop_motor()
 
         q = get_ch()
         if q:

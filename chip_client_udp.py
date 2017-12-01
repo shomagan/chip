@@ -91,7 +91,7 @@ def UdpList(sock):
     print_debug(data_s)
 
 if __name__ == '__main__':
-    UDP_IP = '192.168.88.216'
+    UDP_IP = '192.168.88.218'
     UDP_PORT_CLIENT = 8
     UDP_PORT_SERVER = 7
     MESSAGE = "Hello,chip!"
