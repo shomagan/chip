@@ -88,8 +88,8 @@ def UdpList(sock):
         stop_motor()
       command_last = 72
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.start("CSID4", -35)
-      SERVO.start("CSID5", 60)
+      SERVO.set_angle("CSID4", -35)
+      SERVO.set_angle("CSID5", 60)
 
 
     if len(data_s)==1 and data_s[0]==80:
@@ -102,8 +102,8 @@ def UdpList(sock):
 
       command_last = 80
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.start('CSID5',-35)
-      SERVO.start('CSID4', 60)
+      SERVO.set_angle('CSID5',-35)
+      SERVO.set_angle('CSID4', 60)
     if len(data_s)==1 and data_s[0]==77:
       receive_time = time.time()
       print_debug('receive ->')
@@ -114,8 +114,8 @@ def UdpList(sock):
 
       command_last = 77
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.start("CSID4",60)
-      SERVO.start('CSID5',60)
+      SERVO.set_angle("CSID4",60)
+      SERVO.set_angle('CSID5',60)
     if len(data_s)==1 and data_s[0]==75:
       receive_time = time.time()
       print_debug('receive <-')
@@ -126,8 +126,8 @@ def UdpList(sock):
 
       command_last = 75
       GPIO.output("LCD-CLK",GPIO.HIGH)
-      SERVO.start("CSID5",-60)
-      SERVO.start('CSID4',-60)
+      SERVO.set_angle("CSID5",-60)
+      SERVO.set_angle('CSID4',-60)
     if len(data_s)==1 and data_s[0]==113:
       print_debug('receive quit')
       stop_motor()                                           
