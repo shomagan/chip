@@ -85,12 +85,12 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       if command_last:
-          stop_motor()
+        stop_motor()
       command_last = 72
       GPIO.output("LCD-CLK",GPIO.HIGH)
       SERVO.start("CSID4", -35)
       SERVO.start("CSID5", 60)
-      else:
+      
 
     if len(data_s)==1 and data_s[0]==80:
       receive_time = time.time()
@@ -98,7 +98,7 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       if command_last:
-          stop_motor()
+        stop_motor()
 
       command_last = 80
       GPIO.output("LCD-CLK",GPIO.HIGH)
@@ -110,7 +110,7 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       if command_last:
-          stop_motor()
+        stop_motor()
 
       command_last = 77
       GPIO.output("LCD-CLK",GPIO.HIGH)
@@ -122,7 +122,7 @@ def UdpList(sock):
       if chip_dio_inited==0:
         chip_dio_init()
       if command_last:
-          stop_motor()
+        stop_motor()
 
       command_last = 75
       GPIO.output("LCD-CLK",GPIO.HIGH)
