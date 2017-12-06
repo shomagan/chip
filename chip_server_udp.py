@@ -160,7 +160,7 @@ if __name__ == '__main__':
     thread.start_new_thread(UdpList, (sock,))
     receive_time = time.time()
     UT.unexport_all()
-    while 1:
+    while 0:
         if (receive_time + 0.8 < time.time()) and chip_dio_inited:
             receive_time = time.time()
             stop_motor()
